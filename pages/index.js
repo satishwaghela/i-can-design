@@ -12,6 +12,7 @@ export default function Home(props) {
         <title>I Can Design</title>
       </Head>
       <DraggableContainer stringToRender={stringToRender} />
+      <DraggableContainer stringToRender={stringToRender} />
     </>
   )
 }
