@@ -1,7 +1,11 @@
+import { merge } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  id: uuidv4(),
+  name: 'project1',
+  theme: ``,
   pages: [{
     id: uuidv4(),
     selected: true,
@@ -46,6 +50,9 @@ const slice = createSlice({
       const component = findComponentByID(selectedPage.components, componentData.id);
       component.panState = { ...component.panState, ...panState };
     },
+    setData (state, action) {
+      merge(state, action.payload);
+    }
   }
 });
 
@@ -64,6 +71,14 @@ export const getSelectedPageZoom = (state) => {
 
 export const getSelectedPage = (state) => {
   return findSelectedPage(state.design.pages);
+};
+
+export const getTheme = (state) => {
+  return state.design.theme;
+};
+
+export const getDesignState = (state) => {
+  return state.design;
 };
 
 export default slice;
