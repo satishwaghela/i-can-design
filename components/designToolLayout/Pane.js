@@ -4,15 +4,18 @@ import usePanZoom from "use-pan-and-zoom";
 import Box from '@mui/material/Box';
 
 import { useSelector, useDispatch } from '../../store/store';
-import designSlice from '../../store/designSlice';
+import designSlice, { getSelectedPagePanState } from '../../store/designSlice';
 
 export default function PaneContainer (props) {
   const dispatch = useDispatch();
-  const { transform, zoom, setContainer, panZoomHandlers } = usePanZoom({
-    minZoom: 0.2
-  });
+  const panState = useSelector(getSelectedPagePanState);
 
-  const panState = useSelector(state => state.design.panState);
+  const { transform, zoom, setContainer, panZoomHandlers } = usePanZoom({
+    minZoom: 0.2,
+    initialZoom: panState.zoom,
+    initialPan: panState.position,
+    onPan: (position, transform) => dispatch(designSlice.actions.updatePanState({ position: { x: transform.x, y: transform.y } }))
+  });
 
   useEffect(() => {
     dispatch(designSlice.actions.updatePanState({ transform, zoom }))
