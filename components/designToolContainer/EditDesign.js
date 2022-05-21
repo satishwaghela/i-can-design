@@ -30,10 +30,14 @@ export default function EditDesign(props) {
     if (id !== designState.id || isEqual(dataRef.current, designState)) {
       return '';
     };
-    const res = await axios.put(`/api/design/${id}`, designState);
-    if (res.data) {
-      dataRef.current = res.data;
-      dispatch(designSlice.actions.setData(res.data));
+    try {
+      const res = await axios.put(`/api/design/${id}`, designState);
+      if (res.data) {
+        dataRef.current = res.data;
+        dispatch(designSlice.actions.setData(res.data));
+      }
+    } catch (e) {
+      console.error('Save error', e);
     }
   };
 

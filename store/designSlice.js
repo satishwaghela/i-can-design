@@ -50,6 +50,23 @@ const slice = createSlice({
       const component = findComponentByID(selectedPage.components, componentData.id);
       component.panState = { ...component.panState, ...panState };
     },
+    selectComponent (state, action) {
+      const componentData = action.payload;
+      const selectedPage = findSelectedPage(state.pages);
+      selectedPage.components.forEach(component => component.selected = false);
+      const component = findComponentByID(selectedPage.components, componentData.id);
+      if (component.selected) {
+        component.selected = false;
+      } else {
+        component.selected = true;
+      }
+    },
+    updateComponent (state, action) {
+      const componentData = action.payload;
+      const selectedPage = findSelectedPage(state.pages);
+      const component = findComponentByID(selectedPage.components, componentData.id);
+      merge(component, componentData);
+    },
     setData (state, action) {
       merge(state, action.payload);
     }
@@ -60,6 +77,12 @@ export const { reducer } = slice;
 
 const findSelectedPage = (pages) => pages.find(page => page.selected);
 const findComponentByID = (components, id) => components.find(component => component.id === id);
+
+export const filterSelectedComponents = (state) => {
+  const selectedPage = findSelectedPage(state.design.pages);
+  const components = selectedPage.components.filter(component => component.selected);
+  return components;
+};
 
 export const getSelectedPagePanState = (state) => {
   return findSelectedPage(state.design.pages).panState
