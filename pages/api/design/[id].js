@@ -12,7 +12,6 @@ export default function handler(req, res) {
     req.body.pages.forEach(page => {
       page.components.forEach((component) => {
         component.transformedComponent = babelCore.transformSync(component.component, {presets: ['@babel/preset-react']}).code;
-        console.info('component.transformedComponent', component.transformedComponent)
       });
     });
     db.push(`/${id}`, req.body);
