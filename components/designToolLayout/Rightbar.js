@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Editor from "@monaco-editor/react";
-import Drawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
 
 import { useSelector, useDispatch } from '../../store/store';
@@ -20,25 +19,19 @@ export default function Rightbar() {
   }
 
   return (
-    <Drawer
-      variant="permanent"
-      anchor="right"
-      open
-    >
-      <Box sx={{ width: "450px" }}>
-        {selectedComponent && (
-          <Editor
-            key={selectedComponent.id}
-            height="100vh"
-            defaultLanguage="javascript"
-            defaultValue={selectedComponent?.component}
-            theme="vs-dark"
-            options={options}
-            onChange={(value) => { dispatch(designSlice.actions.updateComponent({ ...selectedComponent, component: value })) }}
-            editorDidMount={() => {}}
-          />
-        )}
-      </Box>
-    </Drawer>
+    <Box sx={{ width: "250px" }}>
+      {selectedComponent && (
+        <Editor
+          key={selectedComponent.id}
+          height="100vh"
+          defaultLanguage="javascript"
+          defaultValue={selectedComponent?.component}
+          theme="vs-dark"
+          options={options}
+          onChange={(value) => { dispatch(designSlice.actions.updateComponent({ ...selectedComponent, component: value })) }}
+          editorDidMount={() => {}}
+        />
+      )}
+    </Box>
   );
 }

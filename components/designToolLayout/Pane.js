@@ -31,27 +31,29 @@ export default function PaneContainer (props) {
   }
 
   return (
-    <Box
-      sx={{
-        minWidth: '100%',
-        minHeight: '100vh',
-        touchAction: 'none',
-        transform: transform,
-        '&:before': {
-          content: '""',
-          display: 'block',
-          height: '20000%',
-          width: '20000%',
-          position: 'absolute',
-          top: '-5000%',
-          left: '-5000%',
-          // background: 'black'
-        }
-      }}
-      ref={_setContainer}
-      {...panZoomHandlers}
-    >
-      {props.children}
+    <Box sx={{ flexGrow: 1 }}>
+      <Box
+        sx={{
+          minWidth: '100%',
+          minHeight: '100vh',
+          touchAction: 'none',
+          transform: transform,
+          '&:before': {
+            content: '""',
+            display: 'block',
+            height: '20000%',
+            width: '20000%',
+            position: 'absolute',
+            top: '-5000%',
+            left: '-5000%',
+            // background: 'black'
+          }
+        }}
+        ref={_setContainer}
+        {...panZoomHandlers}
+      >
+        {props.children}
+      </Box>
     </Box>
   );
 }
