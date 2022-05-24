@@ -20,8 +20,10 @@ export default function PaneContainer (props) {
   const { transform, zoom, setContainer, panZoomHandlers } = usePanZoom({
     minZoom: 0.2,
     initialZoom: panState.zoom,
+    initialPan: panState.position,
     requireCtrlToZoom: true,
     enablePan: false,
+    // onPanEnd: () => debounceUpdatePanStateCB({ x: transform.x, y: transform.y }, transform, zoom ),
     onZoom: (transform) => debounceUpdatePanStateCB({ x: transform.x, y: transform.y }, transform, zoom ),
   });
 
