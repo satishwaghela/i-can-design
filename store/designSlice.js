@@ -11,7 +11,6 @@ const initialState = {
     selected: true,
     panState: {
       zoom: 1,
-      position: { x: 650, y: 100 },
       transform: ''
     },
     components: [{

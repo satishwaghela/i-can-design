@@ -20,8 +20,8 @@ export default function PaneContainer (props) {
   const { transform, zoom, setContainer, panZoomHandlers } = usePanZoom({
     minZoom: 0.2,
     initialZoom: panState.zoom,
-    initialPan: panState.position,
-    onPanEnd: () => debounceUpdatePanStateCB({ x: transform.x, y: transform.y }, transform, zoom ),
+    requireCtrlToZoom: true,
+    enablePan: false,
     onZoom: (transform) => debounceUpdatePanStateCB({ x: transform.x, y: transform.y }, transform, zoom ),
   });
 
@@ -31,26 +31,11 @@ export default function PaneContainer (props) {
   }
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, touchAction: 'none', overflow: 'auto' }} ref={_setContainer} {...panZoomHandlers}>
       <Box
         sx={{
-          minWidth: '100%',
-          minHeight: '100vh',
-          touchAction: 'none',
-          transform: transform,
-          '&:before': {
-            content: '""',
-            display: 'block',
-            height: '20000%',
-            width: '20000%',
-            position: 'absolute',
-            top: '-5000%',
-            left: '-5000%',
-            // background: 'black'
-          }
+          transform: transform
         }}
-        ref={_setContainer}
-        {...panZoomHandlers}
       >
         {props.children}
       </Box>

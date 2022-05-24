@@ -5,7 +5,7 @@ import Pane from '../designToolLayout/Pane'
 
 function DesignToolContainer(props) {
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', height: '100vh' }}>
       <Leftbar />
       <Pane>
         {props.children}
