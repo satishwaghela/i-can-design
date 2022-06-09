@@ -2,6 +2,8 @@ import * as React from 'react';
 import Draggable from 'react-draggable';
 import { Box, Button } from '@mui/material';
 
+import ErrorBoundary from '../ErrorBoundry';
+
 import { useSelector, useDispatch } from '../../store/store';
 import designSlice, { getSelectedPageZoom } from '../../store/designSlice';
 
@@ -17,7 +19,13 @@ export default function DraggableContainer (props) {
   React.useEffect(() => {
     window.React = React;
     window.Button = Button;
-    setContent(eval(componentData.transformedComponent))
+    try {
+      const code = componentData.transformedComponent;
+      const content = eval(code);
+      setContent(content);
+    } catch (e) {
+      console.error('Eval error', e);
+    }
   }, [componentData.transformedComponent]);
 
   const onDragStart = (e, data) => {
@@ -37,9 +45,11 @@ export default function DraggableContainer (props) {
       onStart={onDragStart}
       onStop={onDragStop}
     >
-      <Box style={{ display: 'inline-block' }}>
-        <Box style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, zIndex: 1 }} />
-        {content}
+      <Box style={{ display: 'inline-block', position: 'absolute' }}>
+        <Box style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, zIndex: 1 }} onClick={() => dispatch(designSlice.actions.selectComponent(componentData))} />
+        <ErrorBoundary key={componentData.transformedComponent}>
+          {content}
+        </ErrorBoundary>
       </Box>
     </Draggable>
   );
