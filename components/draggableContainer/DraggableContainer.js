@@ -1,11 +1,14 @@
 import * as React from 'react';
+import { merge } from 'lodash';
 import Draggable from 'react-draggable';
-import { Box, Button } from '@mui/material';
+import * as MuiComponent from '@mui/material';
+import Box from '@mui/material/Box';
 
 import ErrorBoundary from '../ErrorBoundry';
 
 import { useSelector, useDispatch } from '../../store/store';
 import designSlice, { getSelectedPageZoom } from '../../store/designSlice';
+
 
 export default function DraggableContainer (props) {
   const dispatch = useDispatch();
@@ -18,7 +21,7 @@ export default function DraggableContainer (props) {
 
   React.useEffect(() => {
     window.React = React;
-    window.Button = Button;
+    merge(window, MuiComponent);
     try {
       const code = componentData.transformedComponent;
       const content = eval(code);

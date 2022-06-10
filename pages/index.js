@@ -1,31 +1,53 @@
-import * as React from 'react';
-import Head from 'next/head'
+import React, { useEffect, useState } from 'react';
+import { map } from 'lodash';
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
+import { useRouter } from 'next/router'
 import { useSelector, useDispatch } from '../store/store';
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import Box from '@mui/material/Box';
 
-import DraggableContainer from '../components/draggableContainer/DraggableContainer';
-
-import { getSelectedPage } from '../store/designSlice';
+import { getDesignState } from '../store/designSlice';
 
 export default function Home(props) {
-  const selectedPage = useSelector(getSelectedPage);
+  const router = useRouter();
+  const designState = useSelector(getDesignState);
+  const [projects, setProjects] = useState({});
+
+  const fetchProjects =  async () => {
+    const res = await axios.get(`/api/design`);
+    setProjects(res.data);
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  const handleCreateNew = async () => {
+    const newDesign = { ...designState, id: uuidv4() };
+    await axios.put(`/api/design/${newDesign.id}`, newDesign);
+    router.push(`/design/${newDesign.id}`)
+  };
 
   return (
-    <>
-      <Head>
-        <title>I Can Design</title>
-      </Head>
-      {selectedPage?.components.map(componentData => {
-        return <DraggableContainer componentData={componentData} />;
-      })}      
-    </>
+    <Box m={3}>
+      <Grid container spacing={2}>
+        <Grid item lg={3}>
+          <Card onClick={() => handleCreateNew()}>
+            Create New
+          </Card>
+        </Grid>
+        {map(projects, (project) => {
+          return (
+            <Grid item lg={3}>
+              <Card onClick={() => router.push(`/design/${project.id}`)}>
+                {project.id}
+              </Card>
+            </Grid>
+          );
+        })}
+      </Grid>
+    </Box>
   )
 }
-
-// export async function getServerSideProps() {
-//   const stringToRender = require('@babel/core').transform(`<Button variant='contained'>Save</Button>`, {presets: ['@babel/preset-react']}).code;
-//   return {
-//     props: {
-//       stringToRender
-//     }
-//   }
-// }
