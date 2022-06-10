@@ -2,6 +2,16 @@ import { merge } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import { createSlice } from '@reduxjs/toolkit';
 
+const getDefaultComponentState = () => {
+  return {
+    id: uuidv4(),
+    name: 'my_component_1',
+    selected: false,
+    component: `<Button variant="contained">Submit</Button>`,
+    transformedComponent: `/*#__PURE__*/React.createElement(Button, { variant: "contained" }, "Save");`
+  }
+};
+
 const initialState = {
   id: uuidv4(),
   name: 'project1',
@@ -15,23 +25,15 @@ const initialState = {
       transform: ''
     },
     components: [{
-      id: uuidv4(),
-      name: 'my_component_1',
-      selected: false,
+      ...getDefaultComponentState(),
       panState: {
         position: { x:0, y: 0 }
       },
-      component: `<Button variant="contained">Submit</Button>`,
-      transformedComponent: `/*#__PURE__*/React.createElement(Button, { variant: "contained" }, "Save");`
     }, {
-      id: uuidv4(),
-      name: 'my_component_2',
-      selected: false,
+      ...getDefaultComponentState(),
       panState: {
-        position: { x: 16, y: 0 }
+        position: { x:160, y: 0 }
       },
-      component: `<Button variant="contained">Submit</Button>`,
-      transformedComponent: `/*#__PURE__*/React.createElement(Button, { variant: "contained" }, "Save");`
     }]
   }]
 };
@@ -66,6 +68,14 @@ const slice = createSlice({
       const selectedPage = findSelectedPage(state.pages);
       const component = findComponentByID(selectedPage.components, componentData.id);
       merge(component, componentData);
+    },
+    addComponent (state, action) {
+      const componentData = getDefaultComponentState();
+      componentData.panState = {
+        position: { x: 0, y: 0 }
+      };
+      const selectedPage = findSelectedPage(state.pages);
+      selectedPage.components.push(componentData);
     },
     setData (state, action) {
       merge(state, action.payload);
