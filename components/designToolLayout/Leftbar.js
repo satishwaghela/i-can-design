@@ -22,8 +22,8 @@ export default function Leftbar() {
       {selectedPage.components.map(c => {
         return (
           <>
-            <Box>
-              {c.id}
+            <Box onClick={() => dispatch(designSlice.actions.selectComponent(c))}>
+              {c.component.substr(0, 10)}
             </Box>
             <Divider />
           </>

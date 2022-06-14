@@ -7,11 +7,16 @@ import Box from '@mui/material/Box';
 import ErrorBoundary from '../ErrorBoundry';
 
 import { useSelector, useDispatch } from '../../store/store';
-import designSlice, { getSelectedPageZoom } from '../../store/designSlice';
+import designSlice, { getSelectedPageZoom, filterSelectedComponents } from '../../store/designSlice';
 
 
 export default function DraggableContainer (props) {
   const dispatch = useDispatch();
+  const selectedComponents = useSelector(filterSelectedComponents);
+  let selectedComponent = null;
+  if (selectedComponents.length === 1) {
+    selectedComponent = selectedComponents[0];
+  }
 
   const { componentData } = props;
 
@@ -47,6 +52,7 @@ export default function DraggableContainer (props) {
       scale={zoomScale}
       onStart={onDragStart}
       onStop={onDragStop}
+      disabled={componentData !== selectedComponent}
     >
       <Box style={{ display: 'inline-block', position: 'absolute' }}>
         <Box style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, zIndex: 1 }} onClick={() => dispatch(designSlice.actions.selectComponent(componentData))} />
