@@ -60,8 +60,8 @@ export default function EditDesign(props) {
   return (id && id === designState.id) && (
     <DesignToolContainer>
       <ThemeProvider theme={theme}>
-        {selectedPage?.components.map(componentData => {
-          return <DraggableContainer componentData={componentData} />;
+        {selectedPage?.components.map((componentData) => {
+          return <DraggableContainer componentData={componentData} key={componentData.id} />;
         })}
       </ThemeProvider>
     </DesignToolContainer>
