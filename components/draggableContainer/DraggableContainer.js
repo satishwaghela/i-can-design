@@ -53,9 +53,10 @@ export default function DraggableContainer (props) {
       onStart={onDragStart}
       onStop={onDragStop}
       disabled={componentData !== selectedComponent}
+      key={componentData.id}
     >
       <Box style={{ display: 'inline-block', position: 'absolute' }}>
-        <Box style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, zIndex: 1 }} onClick={() => dispatch(designSlice.actions.selectComponent(componentData))} />
+        <Box style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, zIndex: 2 }} onClick={() => dispatch(designSlice.actions.selectComponent(componentData))} />
         <ErrorBoundary key={componentData.transformedComponent}>
           {content}
         </ErrorBoundary>

@@ -86,6 +86,10 @@ const slice = createSlice({
       const selectedPage = findSelectedPage(state.pages);
       selectedPage.components.push(componentData);
     },
+    setComponents (state, action) {
+      const selectedPage = findSelectedPage(state.pages);
+      selectedPage.components = action.payload;
+    },
     setData (state, action) {
       merge(state, action.payload);
     }
