@@ -7,7 +7,16 @@ const getDefaultComponentState = () => {
     id: uuidv4(),
     name: 'my_component_1',
     selected: false,
-    component: `<Button variant="contained">Submit</Button>`,
+    component: `
+<Box
+  sx={{
+    // width: '100px',
+    // height: '100px',
+  }}
+>
+  New Component
+</Box>
+`,
     transformedComponent: `/*#__PURE__*/React.createElement(Button, { variant: "contained" }, "Save");`
   }
 };
@@ -76,6 +85,10 @@ const slice = createSlice({
       };
       const selectedPage = findSelectedPage(state.pages);
       selectedPage.components.push(componentData);
+    },
+    setComponents (state, action) {
+      const selectedPage = findSelectedPage(state.pages);
+      selectedPage.components = action.payload;
     },
     setData (state, action) {
       merge(state, action.payload);
