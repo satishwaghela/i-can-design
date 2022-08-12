@@ -3,6 +3,7 @@ import { merge } from 'lodash';
 import Draggable from 'react-draggable';
 import * as MuiComponent from '@mui/material';
 import Box from '@mui/material/Box';
+import { debounce } from 'lodash';
 
 import ErrorBoundary from '../ErrorBoundry';
 
@@ -46,6 +47,8 @@ export default function DraggableContainer (props) {
     dispatch(designSlice.actions.updateComponentPanState({ panState: { position: { x, y } }, componentData }));
   };
 
+  const onMouseEnterDebounce = debounce(React.useCallback(() => dispatch(designSlice.actions.selectComponent(componentData)), []), 200);
+
   return (
     <Draggable
       defaultPosition={componentData.panState.position}
@@ -56,7 +59,7 @@ export default function DraggableContainer (props) {
       key={componentData.id}
     >
       <Box style={{ display: 'inline-block', position: 'absolute' }}>
-        <Box style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, zIndex: 2 }} onClick={() => dispatch(designSlice.actions.selectComponent(componentData))} />
+        <Box style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, zIndex: 2 }} onMouseEnter={onMouseEnterDebounce} />
         <ErrorBoundary key={componentData.transformedComponent}>
           {content}
         </ErrorBoundary>
